@@ -33,18 +33,31 @@ function mainView (state, emit) {
 }
 
 function timeStore (state, emitter) {
+  // set countdown minutes and seconds
   state.minutes = 24
   state.seconds = 59
+
+  // format countdown timer as minutes:seconds (e.g. 23:41)
   state.countdown = state.minutes + ':' + state.seconds
+
+  // starts a timer
+  // the timer should reset when it reaches the end
   setInterval(function () {
     state.seconds--
+
+    // reset the seconds if seconds is zero then decrement the minute
     if (state.seconds === 0) {
       state.seconds = 59
       state.minutes--
+      // reset the minutes if minutes is zero
       if (state.minutes === 0) {
         state.minutes = 24
       }
     }
+    // formart single digit seconds to have a leading zero (e.g. 23:05)
+    if (state.seconds < 10) state.seconds = '0' + state.seconds
+
+    // set the countdown state for use in the view
     state.countdown = state.minutes + ':' + state.seconds
     emitter.emit('render')
   }, 1000)
