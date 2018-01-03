@@ -1,0 +1,25 @@
+{
+  "name": "nanobreak-app",
+  "version": "1.0.0",
+  "description": "nanobreaks are good",
+  "main": "main-window.js",
+  "scripts": {
+    "start": "NODE_ENV=development electron .",
+    "build": "browserify -p tinyify -t sheetify app.js > bundle.js",
+    "watch": "watchify -p tinyify -t sheetify app.js -o bundle.js"
+  },
+  "author": "Jake Burden <jake@doge.haus>",
+  "license": "ISC",
+  "dependencies": {
+    "choo": "^6.6.1",
+    "electron": "^1.7.10",
+    "menubar": "^5.2.3",
+    "tachyons": "^4.9.0"
+  },
+  "devDependencies": {
+    "browserify": "^14.5.0",
+    "sheetify": "^6.2.0",
+    "tinyify": "^2.4.0",
+    "watchify": "^3.9.0"
+  }
+}
