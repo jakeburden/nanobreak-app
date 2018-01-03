@@ -24,7 +24,7 @@ function mainView (state, emit) {
         <div class='w-50 pa2 tc'>
           <div class='fl fn-l w-100 lh-title mr5-l'>
             <p class='f6 fw4 ml0 mb0'>Next break:</p>
-            <p class='f3 fw6 ml0 mt0'>${state.time}</p>
+            <p class='f3 fw6 ml0 mt0'>${state.countdown}</p>
           </div>
         </div>
       </main>
@@ -33,10 +33,19 @@ function mainView (state, emit) {
 }
 
 function timeStore (state, emitter) {
-  state.time = 25
+  state.minutes = 24
+  state.seconds = 59
+  state.countdown = state.minutes + ':' + state.seconds
   setInterval(function () {
-    state.time--
-    if (state.time === 0) state.time = 25
+    state.seconds--
+    if (state.seconds === 0) {
+      state.seconds = 59
+      state.minutes--
+      if (state.minutes === 0) {
+        state.minutes = 24
+      }
+    }
+    state.countdown = state.minutes + ':' + state.seconds
     emitter.emit('render')
   }, 1000)
 }
