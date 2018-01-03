@@ -15,7 +15,7 @@ function mainView (state, emit) {
     <body class='bg-black white sans-serif'>
       <header class='tc ph4'>
         <h1 class='f3 fw2 mv3'>nanobreak</h1>
-        <h2 class='f5 fw2 mt0 lh-copy'>smol breaks, reminding you to take a breath</h2>
+        <h2 class='f5 fw2 mt0 lh-copy'>relax for half a minute</h2>
       </header>
       <main class='mw9 center ph3 flex items-center'>
         <div class='w-50 pa2 tc'>
