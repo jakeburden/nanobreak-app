@@ -11,6 +11,7 @@ app.use(timeStore)
 app.route('/', mainView)
 
 function mainView (state, emit) {
+
   return html`
     <body class='bg-black white sans-serif'>
       <header class='tc ph4'>
@@ -19,7 +20,9 @@ function mainView (state, emit) {
       </header>
       <main class='mw9 center ph3 flex items-center'>
         <div class='w-50 pa2 tc'>
-          <a class='f6 link pointer w-100 ba bw1 ph3 pv2 mb2 dib tracked ttu'>Start</a>
+          <a
+            class='f6 link pointer w-100 ba bw1 ph3 pv2 mb2 dib tracked ttu'
+            onclick=${startClick}>${state.startClick || 'start'}</a>
         </div>
         <div class='w-50 pa2 tc'>
           <div class='fl fn-l w-100 lh-title mr5-l'>
@@ -30,37 +33,61 @@ function mainView (state, emit) {
       </main>
     </body>
   `
+
+  function startClick () {
+    emit('startClick', (!state.startClick || state.startClick === 'start')
+      ? 'stop'
+      : 'start')
+  }
 }
 
 function timeStore (state, emitter) {
+  var countDownId
   // set countdown minutes and seconds
-  state.minutes = 24
-  state.seconds = 59
+  state.minutes = 25
+  state.seconds = '00'
 
   // format countdown timer as minutes:seconds (e.g. 23:41)
   state.countdown = state.minutes + ':' + state.seconds
 
-  // starts a timer
-  // the timer should reset when it reaches the end
-  setInterval(function () {
-    state.seconds--
 
-    // reset the seconds if seconds is zero then decrement the minute
-    if (state.seconds === 0) {
-      state.seconds = 59
-      state.minutes--
-      // reset the minutes if minutes is zero
-      if (state.minutes === 0) {
-        state.minutes = 24
-      }
+  emitter.on('startClick', function (startOrStop) {
+    if (state.seconds === '00') {
+      state.minutes = 24
+      state.seconds = 60
     }
-    // formart single digit seconds to have a leading zero (e.g. 23:05)
-    if (state.seconds < 10) state.seconds = '0' + state.seconds
-
-    // set the countdown state for use in the view
-    state.countdown = state.minutes + ':' + state.seconds
+    state.startClick = startOrStop
+    if (state.startClick === 'stop') {
+      countDownId = countDown()
+    } else {
+      clearInterval(countDownId)
+    }
     emitter.emit('render')
-  }, 1000)
+  })
+
+  function countDown () {
+    // starts a timer
+    // the timer should reset when it reaches the end
+    return setInterval(function () {
+      state.seconds--
+
+      // reset the seconds if seconds is zero then decrement the minute
+      if (state.seconds === 0) {
+        state.seconds = 59
+        state.minutes--
+        // reset the minutes if minutes is zero
+        if (state.minutes === 0) {
+          state.minutes = 24
+        }
+      }
+      // formart single digit seconds to have a leading zero (e.g. 23:05)
+      if (state.seconds < 10) state.seconds = '0' + state.seconds
+
+      // set the countdown state for use in the view
+      state.countdown = state.minutes + ':' + state.seconds
+      emitter.emit('render')
+    }, 1000)
+  }
 }
 
 if (!module.parent) app.mount('body')
