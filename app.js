@@ -77,6 +77,7 @@ function timeStore (state, emitter) {
         state.minutes--
         // reset the minutes if minutes is zero
         if (state.minutes === 0) {
+          // TODO: show dialog telling user to take a break
           state.minutes = 24
         }
       }
