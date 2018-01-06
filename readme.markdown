@@ -42,6 +42,6 @@ $ npm start
 - [ ] Tests
 - [x] Design and build a functioning countdown stopwatch
 - [ ] Design and build dialog telling user it is time to relax
-- [ ] Desgin and build prompt asking the user to write progress notes
-- [ ] Make an offical nanobreak desktop icon
+- [ ] Design and build prompt asking the user to write progress notes
+- [ ] Make an official nanobreak desktop icon
 - [ ] Package app for release
